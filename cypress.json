@@ -1,3 +1,6 @@
 {
-    "baseUrl": "https://www.educative.io/"
+    "baseUrl": "https://www.educative.io/",
+    "viewportWidth": 1920,
+    "viewportHeight": 1080,
+    "pageLoadTimeout": 240000
 }
