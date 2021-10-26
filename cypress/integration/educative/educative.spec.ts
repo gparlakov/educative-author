@@ -1,3 +1,5 @@
+import { Lesson } from '../../support/educative-types';
+
 describe('store current version in fixtures', () => {
   const jasmineEducativeMainPage = 'collection/6379329146060800/5814889438773248/draft';
   const coursePage = '[class^="Page-sc"]';
@@ -158,10 +160,17 @@ describe('store current version in fixtures', () => {
       cy.visit(l.href);
       cy.wait(pAlias)
         .its('response.body')
-        .then((body) => {
-          cy.writeFile(`course/lessons/${fileName}.json`, body);
+        .then((body: string) => {
+          const l: Lesson = JSON.parse(body);
+
+          const md = `${l.summary.description}/n//tags${l.summary.tags.join()}/n${l.components.map(c => {
+            c.type === 'MarkdownEditor' ? c.content.text : c.type
+          })}`
+
+          cy.writeFile(`course/lessons/${fileName}.json`, JSON.stringify(JSON.parse(body), null, 2));
+          cy.writeFile(`course/lessons/${fileName}.md`, md);
         });
-      storeContents(lessonPage, `course/lessons/${fileName}.txt`);
+      // storeContents(lessonPage, `course/lessons/${fileName}.txt`);
       cy.wait(10000);
     });
   });
@@ -180,4 +189,6 @@ function login() {
   cy.get('input[type="password"]').type(Cypress.env('EDUCATIVE_PASSWORD').replace(/"/g, ''));
   cy.get('[type="submit"]').click();
   cy.wait('@login');
+
+  cy.contains('[name=two_factor_code]', /\d{6}/, {timeout: 600000});
 }

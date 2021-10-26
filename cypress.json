@@ -2,5 +2,6 @@
     "baseUrl": "https://www.educative.io/",
     "viewportWidth": 1920,
     "viewportHeight": 1080,
-    "pageLoadTimeout": 240000
+    "pageLoadTimeout": 240000,
+    "ignoreTestFiles": ["**/1-getting-started/*", "**/2-advanced-examples/*"]
 }
